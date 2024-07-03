@@ -94,11 +94,14 @@ def group_texts(examples):
     result["labels"] = result["input_ids"].copy()
     return result
 
+def model_init(trial):
+    return AutoModelForCausalLM.from_pretrained(model_name)
 
-def finetune_clm(model_name:str="distilbert/distilgpt2",BLOCK_SIZE:int=512,num_train_epochs:int=3,per_device_train_batch_size:int=8,learning_rate:float=2e-5):
+def finetune_clm(MODEL_NAME:str="distilbert/distilgpt2",BLOCK_SIZE:int=512,num_train_epochs:int=3,per_device_train_batch_size:int=8,learning_rate:float=2e-5):
     global block_size
     block_size = BLOCK_SIZE
-
+    global model_name
+    model_name = MODEL_NAME
     # free_in_GB = int(torch.cuda.mem_get_info()[0] / 1024**3)
     # max_memory = f"{free_in_GB-2}GB"
 
@@ -151,6 +154,7 @@ def finetune_clm(model_name:str="distilbert/distilgpt2",BLOCK_SIZE:int=512,num_t
     
     trainer = Trainer(
         model=model,
+        # model_init=model_init,
         args=training_args,
         train_dataset=lm_datasets,
         data_collator=data_collator,

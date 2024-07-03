@@ -13,6 +13,8 @@ python-dotenv = "^1.0.1"
 wandb = "^0.17.4"
 datasets = "^2.20.0"
 accelerate = "^0.32.0"
+dspy-ai = "^2.4.10"
+chromadb = "^0.5.3"
 
 
 [build-system]
