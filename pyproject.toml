@@ -7,10 +7,12 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-transformers = "^4.42.3"
+transformers = {extras = ["torch"], version = "^4.42.3"}
 langchain-text-splitters = "^0.2.2"
 python-dotenv = "^1.0.1"
 wandb = "^0.17.4"
+datasets = "^2.20.0"
+accelerate = "^0.32.0"
 
 
 [build-system]

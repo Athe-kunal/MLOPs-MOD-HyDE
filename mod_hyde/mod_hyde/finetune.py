@@ -95,7 +95,7 @@ def group_texts(examples):
     return result
 
 
-def finetune_distilgpt2(model_name:str="distilbert/distilgpt2",BLOCK_SIZE:int=512,num_train_epochs:int=3,per_device_train_batch_size:int=8,learning_rate:float=2e-5):
+def finetune_clm(model_name:str="distilbert/distilgpt2",BLOCK_SIZE:int=512,num_train_epochs:int=3,per_device_train_batch_size:int=8,learning_rate:float=2e-5):
     global block_size
     block_size = BLOCK_SIZE
 
@@ -123,6 +123,7 @@ def finetune_distilgpt2(model_name:str="distilbert/distilgpt2",BLOCK_SIZE:int=51
                 transcripts_text.append(curr_text)
     all_text_list = splitted_books_data + transcripts_text
     tokenizer = AutoTokenizer.from_pretrained(model_name)
+    tokenizer.pad_token = tokenizer.eos_token
     model = AutoModelForCausalLM.from_pretrained(model_name)
 
     data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
@@ -142,7 +143,7 @@ def finetune_distilgpt2(model_name:str="distilbert/distilgpt2",BLOCK_SIZE:int=51
         bf16 = torch.cuda.is_bf16_supported(),
         weight_decay=0.01,
         lr_scheduler_type= 'cosine',
-        optim = "adamw",
+        optim = "adamw_torch",
         seed = 42,
         gradient_accumulation_steps = 1,
         report_to="wandb",
