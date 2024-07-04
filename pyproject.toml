@@ -15,7 +15,9 @@ datasets = "^2.20.0"
 accelerate = "^0.32.0"
 dspy-ai = "^2.4.10"
 chromadb = "^0.5.3"
-
+fire = "^0.6.0"
+moviepy = "^1.0.3"
+unstructured = "0.13.2"
 
 [build-system]
 requires = ["poetry-core"]
