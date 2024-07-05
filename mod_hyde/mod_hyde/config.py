@@ -6,3 +6,4 @@ EMBEDDING_MODEL = "text-embedding-3-small"
 TOP_K = 5
 OPENAI_MODEL_NAME = "gpt-3.5-turbo-0125"
 HYDE_OPENAI_MODEL_NAME = "gpt-3.5-turbo-0125"
+TOKENIZER_MODEL="distilbert/distilgpt2"
