@@ -1,2 +1,4 @@
 .env
 AD-DB-*
+wandb
+artifacts

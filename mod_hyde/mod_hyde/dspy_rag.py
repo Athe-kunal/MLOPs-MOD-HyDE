@@ -6,6 +6,8 @@ from mod_hyde.mod_hyde.config import *
 from transformers import pipeline, AutoTokenizer
 from rerankers import Reranker
 import torch
+import wandb
+import shutil
 
 load_dotenv(find_dotenv(),override=True)
 openai.api_key = os.environ["OPENAI_API_KEY"]
@@ -28,10 +30,16 @@ class HyDEGenerateAnswer(dspy.Signature):
     reasoning = dspy.OutputField(desc='Reasoning behind the answer')
     answer = dspy.OutputField(desc="answer concisely with as many details as possible")
 
+if os.path.exists("artifacts"):
+    shutil.rmtree("artifacts")
+
+run = wandb.init()
+artifact = run.use_artifact('WGQA_T5/model-registry/Modified HyDE model collection:v0', type='model')
+artifact_dir = artifact.download()
 
 tokenizer = AutoTokenizer.from_pretrained(TOKENIZER_MODEL)
-
-pipe = pipeline("text-generation", model=MOD_HYDE_MODEL,tokenizer=tokenizer)
+model_name = os.listdir("artifacts")[0]
+pipe = pipeline("text-generation", model=model_name,tokenizer=tokenizer)
 def get_mod_HyDE_answer(question):
     out = pipe(question,max_new_tokens=300,do_sample=True,min_new_tokens=10)
     return out[0]['generated_text']
